@@ -1,0 +1,3 @@
+- "!include public_users.yaml"
+- "!include public_weight_records.yaml"
+- "!include public_api_logs.yaml"

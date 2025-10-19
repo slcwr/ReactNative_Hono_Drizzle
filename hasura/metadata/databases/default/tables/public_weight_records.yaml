@@ -1,0 +1,51 @@
+table:
+  name: weight_records
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - user_id
+        - weight
+        - unit
+        - notes
+        - recorded_at
+        - created_at
+        - updated_at
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      columns:
+        - weight
+        - unit
+        - notes
+        - recorded_at
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - weight
+        - unit
+        - notes
+        - recorded_at
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

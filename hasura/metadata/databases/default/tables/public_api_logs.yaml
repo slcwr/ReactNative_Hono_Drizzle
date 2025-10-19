@@ -1,0 +1,17 @@
+table:
+  name: api_logs
+  schema: public
+select_permissions:
+  - role: admin
+    permission:
+      columns:
+        - id
+        - endpoint
+        - method
+        - status_code
+        - request_body
+        - response_body
+        - error_message
+        - created_at
+      filter: {}
+      allow_aggregations: true

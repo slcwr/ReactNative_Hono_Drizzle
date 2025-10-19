@@ -14,6 +14,7 @@ services:
       - DB_NAME=appdb
     depends_on:
       - db
+      - hasura
     networks:
       - app-network
 
@@ -28,6 +29,46 @@ services:
       POSTGRES_DB: appdb
     ports:
       - "5432:5432"
+    networks:
+      - app-network
+
+  hasura:
+    image: hasura/graphql-engine:v2.45.0
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@db:5432/appdb
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_CORS_DOMAIN: "*"
+    networks:
+      - app-network
+
+  hono-api:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/appdb
+      - PORT=3000
+      - NODE_ENV=development
+      - HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
+      - HASURA_GRAPHQL_ENDPOINT=http://hasura:8080
+    depends_on:
+      - db
+      - hasura
     networks:
       - app-network
 
