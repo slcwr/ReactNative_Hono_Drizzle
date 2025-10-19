@@ -4,11 +4,18 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@features/*": ["src/features/*"],
-      "@shared/*": ["src/shared/*"],
-      "@entities/*": ["src/entities/*"]
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@entities/*": [
+        "src/entities/*"
+      ]
     }
-  },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  }
 }
